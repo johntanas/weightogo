@@ -1,12 +1,16 @@
 from bs4 import BeautifulSoup
 import requests
+import sqlite3
+from get_data import insert_food
 import time
-import os
-import re
-filename= "data"
-if not os.path.exists(filename):
-    os.makedirs(filename)
-html_doc = open(filename+".html", "rb")
-soup = BeautifulSoup(html_doc, 'html.parser')
-for i in soup.findAll('a',{"class":"MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineNone css-1k8z5lp"}):
-    print(i.prettify())
+root="https://www.myfitnesspal.com/nutrition-facts-calories/"
+query="chicken"
+con = sqlite3.connect("data.db")
+cur = con.cursor()
+html_doc= requests.get(root+query).content
+insert_food(con,html_doc)
+for i in range(2,10):
+    html_doc= requests.get(root+query+"/"+str(i)).content
+    insert_food(con,html_doc)
+    print(i)
+    time.sleep(3)
