@@ -1,10 +1,12 @@
 import { Stack } from "expo-router";
 import { AuthProvider } from "../contexts/auth";
-
+import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 export default function RootLayout() {
     return (
-        <AuthProvider>
-            <Stack screenOptions={{ headerShown: false }} />
-        </AuthProvider>
+        <AutocompleteDropdownContextProvider>
+            <AuthProvider>
+                <Stack screenOptions={{ headerShown: false }} />
+            </AuthProvider>
+        </AutocompleteDropdownContextProvider>
     )
 }
