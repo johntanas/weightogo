@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { useEffect, useState } from 'react';
 import { Checkbox, Text } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import CalcDisplay from '../../components/CalorieCalculator';
 
 export default function HomeScreen() {
     const [todos, setTodos] = useState([]);
@@ -34,6 +35,7 @@ export default function HomeScreen() {
                 onRefresh={() => setRefreshing(true)}
                 refreshing={refreshing}
             />
+            <CalcDisplay />
         </View>
     );
 }
