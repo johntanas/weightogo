@@ -4,6 +4,16 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import { useState } from "react";
 
 
+function MaintenanceCals({cals}){
+    if (cals ===0){
+        return (<Text></Text>);
+    }
+    return (
+        <View>
+            <Text>{cals}</Text>
+        </View>)
+}
+
 export default function CalcDisplay(){
 
     const onSubmit = () => {
@@ -75,7 +85,7 @@ export default function CalcDisplay(){
                 save = "value"
                 label = "Please select your gender"/>
             <Button onPress = {onSubmit}>Submit</Button>
-            {maintenanceCals!==0}?<Text>Maintenance Calories is {maintenanceCals}</Text>;
+            <MaintenanceCals cals = {maintenanceCals} />
         </View>
     )
 }
