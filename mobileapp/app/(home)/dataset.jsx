@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState } from 'react'
 import { Text, View } from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 
-export default function HomeScreen() {
+export default function DataScreen() {
     return (
         <RemoteDataSetExample />
     );
