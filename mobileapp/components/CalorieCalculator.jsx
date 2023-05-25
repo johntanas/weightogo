@@ -1,6 +1,6 @@
 import { Button, Text, TextInput } from "react-native-paper";
 import  { View } from "react-native";
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { SelectList } from 'react-native-dropdown-select-list';
 import { useState } from "react";
 
 
@@ -74,12 +74,12 @@ export default function CalcDisplay(){
             <Text>Your height in centimeters</Text>
             <TextInput onChangeText={(text) => setHeight(text)}></TextInput>
             <Text>Your activity level</Text>
-            <MultipleSelectList 
+            <SelectList 
                 setSelected={(val) => setSelectedCat(val)} 
                 data={data} 
                 save="value"
                 label="Activity Levels" />
-            <MultipleSelectList
+            <SelectList
                 setSelected = {(val) => setGender(val)}
                 data = {genders}
                 save = "value"
