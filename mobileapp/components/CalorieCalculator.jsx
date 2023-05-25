@@ -4,7 +4,7 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import { useState } from "react";
 
 
-export function CalcDisplay(){
+export default function CalcDisplay(){
 
     const onSubmit = () => {
         const rmr = gender==="Male"?weight*9.99 + height*6.25 - 4.92*age + 5:weight*9.99 + height*6/25 - 4.92*age -161;
