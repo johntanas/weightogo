@@ -17,8 +17,8 @@ function MaintenanceCals({cals}){
 export default function CalcDisplay(){
 
     const onSubmit =  async () => {
-        const rmr = gender==="Male"?weight*9.99 + height*6.25 - 4.92*age + 5:weight*9.99 + height*6/25 - 4.92*age -161;
-        
+        const rmr = gender==="Male"?weight*9.99 + height*6.25 - 4.92*age -195:weight*9.99 + height*6/25 - 4.92*age -361;
+        // i minus extra 200
 
         selectedCat.startsWith("0")?setMaintenanceCals(rmr*1.2):
         selectedCat.startsWith("1")?setMaintenanceCals(rmr*1.3-1.375):
