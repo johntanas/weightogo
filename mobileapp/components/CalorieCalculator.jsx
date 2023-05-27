@@ -16,7 +16,7 @@ function MaintenanceCals({cals}){
 
 export default function CalcDisplay(){
 
-    const onSubmit = () => {
+    const onSubmit =  async () => {
         const rmr = gender==="Male"?weight*9.99 + height*6.25 - 4.92*age + 5:weight*9.99 + height*6/25 - 4.92*age -161;
         
 

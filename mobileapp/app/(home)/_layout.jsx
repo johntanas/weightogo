@@ -4,9 +4,8 @@ export default function HomeScreen() {
     
     return (
         <Tabs>
-            <Tabs.Screen name="index" options={{ title: "Calculator" }} />
+            <Tabs.Screen name="index" options={{ title: "profile" }} />
             <Tabs.Screen name="dataset" />
-            <Tabs.Screen name="profile" />
         </Tabs>
     );
 }
