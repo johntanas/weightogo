@@ -22,8 +22,7 @@ const RemoteDataSetExample = memo(() => {
         return
         }
         setLoading(true)
-        const {data} = await supabase.from('foodData').select('*')
-        const suggestions = data
+        const {suggestions} = await supabase.from('foodData').select('*')
         .filter(item => item.name.toLowerCase().includes(filterToken))
         .map(item => ({
             id: item.id,
