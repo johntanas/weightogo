@@ -33,7 +33,7 @@ export default function CalcDisplay(){
     }
     const calculateCalories= () =>{
         if (data.age && data.weight && data.gender && data.height && data.selectedCat &&data.weight){
-            const rmr = (data.gender=="Male")?data.weight*9.99 + data.height*6.25 - 4.92*data.age -195: data.weight*9.99 + data.height*6.25 - 4.92*data.age -361;
+            const rmr = (data.gender=="Male")?data.weight*9.99 + data.height*6.25 - 4.92*data.age -50: data.weight*9.99 + data.height*6.25 - 4.92*data.age -216;
             data.selectedCat[0]==0?setMaintenanceCals(rmr*1.2):
             data.selectedCat[0]==1?setMaintenanceCals(rmr*1.3-1.375):
             data.selectedCat[0]==3?setMaintenanceCals(rmr*1.5-1.55):
