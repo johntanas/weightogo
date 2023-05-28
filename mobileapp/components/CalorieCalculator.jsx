@@ -4,15 +4,6 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from "../contexts/auth";
-function MaintenanceCals({cals}){
-    if (cals ===0){
-        return (<Text></Text>);
-    }
-    return (
-        <View>
-            <Text>{cals}</Text>
-        </View>)
-}
 
 export default function CalcDisplay(){
     const [maintenanceCals, setMaintenanceCals] = useState(0);
@@ -96,6 +87,7 @@ export default function CalcDisplay(){
                 data={activityLevel} 
                 save="value"
                 label="Activity Levels" />
+            <Text>Gender</Text>
             <SelectList
                 placeholder={data.gender}
                 setSelected = {(val) => setData(prevState => ({...prevState,gender:val}))}
@@ -104,8 +96,7 @@ export default function CalcDisplay(){
                 label = "Please select your gender"/>
             <Button onPress = {onSubmit}>Submit</Button>
             <View style = {{flexDirection: "row"}}>
-                {maintenanceCals !== 0 && <Text>Your Maintenance Cals are : </Text>}
-                <MaintenanceCals cals = {Math.round(maintenanceCals)} />
+                {maintenanceCals !== 0 && <Text>Your Maintenance Cals are : {maintenanceCals}</Text>}
             </View>
             
         </View>
