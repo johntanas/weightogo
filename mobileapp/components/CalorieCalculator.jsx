@@ -27,7 +27,7 @@ export default function CalcDisplay(){
         })
     },[]
     )
-    const [data,setData] = useState({age:"",weight:"",height:"",age:"",selectedCat:"",gender:""});
+    const [data,setData] = useState({age:"",weight:"",height:"",selectedCat:"",gender:""});
     const insertRmrData = async (data) => {
         const { error } = await supabase.from('rmrData').upsert({ user_id: user.id,...data})
     }
