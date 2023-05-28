@@ -1,8 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
-import time
 import re
-import sqlite3
 def insert_food(con,html_doc):
     cur = con.cursor()
     soup = BeautifulSoup(html_doc, 'html.parser')
