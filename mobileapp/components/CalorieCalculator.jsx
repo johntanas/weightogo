@@ -38,7 +38,7 @@ export default function CalcDisplay(){
             data.selectedCat[0]==1?setMaintenanceCals(rmr*1.3-1.375):
             data.selectedCat[0]==3?setMaintenanceCals(rmr*1.5-1.55):
             data.selectedCat[0]==5?setMaintenanceCals(rmr*1.7):setMaintenanceCals(rmr*1.9);
-            data.maintenanceCals=maintenanceCals
+            data.maintenanceCals=maintenanceCals;
         }
     }
     const onSubmit =  () => {
@@ -101,7 +101,11 @@ export default function CalcDisplay(){
                 save = "value"
                 label = "Please select your gender"/>
             <Button onPress = {onSubmit}>Submit</Button>
-            <MaintenanceCals cals = {maintenanceCals} />
+            <View style = {{flexDirection: "row"}}>
+                {maintenanceCals !== 0 && <Text>Your Maintenance Cals are : </Text>}
+                <MaintenanceCals cals = {Math.round(maintenanceCals)} />
+            </View>
+            
         </View>
     )
 }
