@@ -22,6 +22,7 @@ export default function CalcDisplay(){
         supabase.from('rmrData').select('*').then(response => {
             if (response.data.length!=0){
                 setData(response.data[0])
+                console.log(data.maintenanceCals)
                 setMaintenanceCals(data.maintenanceCals)
             }
         })
@@ -33,6 +34,7 @@ export default function CalcDisplay(){
     }
     const calculateCalories= () =>{
         if (data.age && data.weight && data.gender && data.height && data.selectedCat &&data.weight){
+            console.log(data.gender)
             const rmr = (data.gender=="Male")?data.weight*9.99 + data.height*6.25 - 4.92*data.age -50: data.weight*9.99 + data.height*6.25 - 4.92*data.age -216;
             data.selectedCat[0]==0?setMaintenanceCals(rmr*1.2):
             data.selectedCat[0]==1?setMaintenanceCals(rmr*1.3-1.375):
@@ -95,7 +97,7 @@ export default function CalcDisplay(){
                 save="value"
                 label="Activity Levels" />
             <SelectList
-                value={data.gender}
+                placeholder={data.gender}
                 setSelected = {(val) => setData(prevState => ({...prevState,gender:val}))}
                 data = {genders}
                 save = "value"
