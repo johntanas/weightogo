@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useState } from 'react'
 import { Text, View } from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
+import { supabase } from '../lib/supabase';
 
-export default function DataScreen() {
+export default function FoodSearch() {
     return (
         <RemoteDataSetExample />
     );
@@ -21,18 +22,12 @@ const RemoteDataSetExample = memo(() => {
         return
         }
         setLoading(true)
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts').then(
-        data =>
-            new Promise(res => {
-            setTimeout(() => res(data), 2000) // imitate of a long response
-            })
-        )
-        const items = await response.json()
-        const suggestions = items
-        .filter(item => item.title.toLowerCase().includes(filterToken))
+        const {data} = await supabase.from('foodData').select('*')
+        const suggestions = data
+        .filter(item => item.name.toLowerCase().includes(filterToken))
         .map(item => ({
             id: item.id,
-            title: item.title
+            title: item.name
         }))
         console.log('suggestions', suggestions)
         setRemoteDataSet(suggestions)
