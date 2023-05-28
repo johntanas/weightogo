@@ -1,9 +1,9 @@
 import { Button, Text, TextInput } from "react-native-paper";
 import  { View } from "react-native";
 import { SelectList } from 'react-native-dropdown-select-list';
-import { useState } from "react";
-
-
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
+import { useAuth } from "../contexts/auth";
 function MaintenanceCals({cals}){
     if (cals ===0){
         return (<Text></Text>);
@@ -15,19 +15,38 @@ function MaintenanceCals({cals}){
 }
 
 export default function CalcDisplay(){
-
-    const onSubmit =  async () => {
-        const rmr = gender==="Male"?weight*9.99 + height*6.25 - 4.92*age -195:weight*9.99 + height*6/25 - 4.92*age -361;
-        // i minus extra 200
-
-        selectedCat.startsWith("0")?setMaintenanceCals(rmr*1.2):
-        selectedCat.startsWith("1")?setMaintenanceCals(rmr*1.3-1.375):
-        selectedCat.startsWith("3")?setMaintenanceCals(rmr*1.5-1.55):
-        selectedCat.startsWith("5")?setMaintenanceCals(rmr*1.7):
-        setMaintenanceCals(rmr*1.9);
+    const [maintenanceCals, setMaintenanceCals] = useState(0);
+    const { user } = useAuth();
+    useEffect(()=>
+    {
+        supabase.from('rmrData').select('*').then(response => {
+            if (response.data.length!=0){
+                setData(response.data[0])
+                setMaintenanceCals(data.maintenanceCals)
+            }
+        })
+    },[]
+    )
+    const [data,setData] = useState({age:"",weight:"",height:"",age:"",selectedCat:"",gender:""});
+    const insertRmrData = async (data) => {
+        const { error } = await supabase.from('rmrData').upsert({ user_id: user.id,...data})
+    }
+    const calculateCalories= () =>{
+        if (data.age && data.weight && data.gender && data.height && data.selectedCat &&data.weight){
+            const rmr = (data.gender=="Male")?data.weight*9.99 + data.height*6.25 - 4.92*data.age + 5: data.weight*9.99 + data.height*6.25 - 4.92*data.age -161;
+            data.selectedCat[0]==0?setMaintenanceCals(rmr*1.2):
+            data.selectedCat[0]==1?setMaintenanceCals(rmr*1.3-1.375):
+            data.selectedCat[0]==3?setMaintenanceCals(rmr*1.5-1.55):
+            data.selectedCat[0]==5?setMaintenanceCals(rmr*1.7):setMaintenanceCals(rmr*1.9);
+            data.maintenanceCals=maintenanceCals
+        }
+    }
+    const onSubmit =  () => {
+        calculateCalories()
+        insertRmrData(data);
     }
 
-    const data = [
+    const activityLevel = [
         {
             key : "1",
             value : "0-1 days a week",
@@ -59,28 +78,25 @@ export default function CalcDisplay(){
             value : "Female"
         }
     ]
-    const [age, setAge] = useState(0);
-    const [weight, setWeight] = useState(0);
-    const [height, setHeight] = useState(0);
-    const [selectedCat, setSelectedCat] = useState("");
-    const [gender, setGender] = useState("");
-    const [maintenanceCals, setMaintenanceCals] = useState(0);
+
     return (
         <View>
             <Text>Your age</Text>
-            <TextInput onChangeText={(text) => setAge(text)}></TextInput>
+            <TextInput placeholder={data.age} onChangeText={(age) => setData(prevState => ({...prevState,age:age}))}></TextInput>
             <Text>Your weight in kilograms</Text>
-            <TextInput onChangeText={(text) => setWeight(text)}></TextInput>
+            <TextInput placeholder={data.weight} onChangeText={(weight) => setData(prevState => ({...prevState,weight:weight}))}></TextInput>
             <Text>Your height in centimeters</Text>
-            <TextInput onChangeText={(text) => setHeight(text)}></TextInput>
+            <TextInput placeholder={data.height} onChangeText={(height) => setData(prevState => ({...prevState,height:height}))}></TextInput>
             <Text>Your activity level</Text>
             <SelectList 
-                setSelected={(val) => setSelectedCat(val)} 
-                data={data} 
+                placeholder={data.selectedCat}
+                setSelected={(val) => setData(prevState => ({...prevState,selectedCat:val}))} 
+                data={activityLevel} 
                 save="value"
                 label="Activity Levels" />
             <SelectList
-                setSelected = {(val) => setGender(val)}
+                value={data.gender}
+                setSelected = {(val) => setData(prevState => ({...prevState,gender:val}))}
                 data = {genders}
                 save = "value"
                 label = "Please select your gender"/>
