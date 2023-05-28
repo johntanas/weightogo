@@ -42,7 +42,7 @@ export default function CalcDisplay(){
         }
     }
     const onSubmit =  () => {
-        calculateCalories()
+        calculateCalories();
         insertRmrData(data);
     }
 
