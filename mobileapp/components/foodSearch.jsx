@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useState } from 'react'
-import { Text, View } from 'react-native'
+import { Text} from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import { supabase } from '../lib/supabase';
-
+import FoodAdd from './FoodAdd';
 export default function FoodSearch() {
     return (
         <RemoteDataSetExample />
@@ -15,20 +15,19 @@ const RemoteDataSetExample = memo(() => {
     const [selectedItem, setSelectedItem] = useState(null)
 
     const getSuggestions = useCallback(async q => {
-        const filterToken = q.toLowerCase()
-        console.log('getSuggestions', filterToken)
+        console.log('getSuggestions', q)
         if (typeof q !== 'string' || q.length < 3) {
-        setRemoteDataSet(null)
-        return
+            setRemoteDataSet(null)
+            return
         }
         setLoading(true)
-        const {suggestions} = await supabase.from('foodData').select('*')
-        .filter(item => item.name.toLowerCase().includes(filterToken))
-        .map(item => ({
+        const {data} = await supabase.from('foodData').select().ilike('name',"%"+q+"%")
+        const suggestions=data.map(item => ({
             id: item.id,
-            title: item.name
+            title: item.name,
+            calories :item.Calories
         }))
-        console.log('suggestions', suggestions)
+        //console.log('suggestions', suggestions)
         setRemoteDataSet(suggestions)
         setLoading(false)
     }, [])
@@ -49,7 +48,7 @@ const RemoteDataSetExample = memo(() => {
             suggestionsListTextStyle={{
                 color: '#8f3c96'
             }}
-            EmptyResultComponent={<Text style={{ padding: 10, fontSize: 15 }}>Oops ¯\_(ツ)_/¯</Text>}
+            EmptyResultComponent={<FoodAdd />}
         />
         <Text style={{ color: '#668', fontSize: 13 }}>Selected item: {JSON.stringify(selectedItem)}</Text>
         </>
