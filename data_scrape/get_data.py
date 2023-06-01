@@ -4,7 +4,7 @@ def insert_food(con,html_doc):
     cur = con.cursor()
     soup = BeautifulSoup(html_doc, 'html.parser')
     for i in soup.findAll("div",{"class":"MuiBox-root css-1cheb17"}):
-        name= i.find("p",{"class":"css-j7qwjs"}).text
+        name= i.find("p",{"class":"css-qumjp8"}).text
         values={}
         values["name"]=name
         cond=1
