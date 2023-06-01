@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "mobileapp",
-    "slug": "mobileapp",
+    "slug": "weightogo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +15,31 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.godoscar.weightogo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.godoscar.weightogo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f7f83fe9-c8a0-4765-a26b-450d415be45c"
+      }
+    },
+    "owner": "godoscar",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f7f83fe9-c8a0-4765-a26b-450d415be45c"
+    },
+    "scheme":"demo"
   }
 }
