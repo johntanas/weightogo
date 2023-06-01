@@ -40,7 +40,7 @@ const RemoteDataSetExample = memo(() => {
             useFilter={false}
             clearOnFocus={false}
             textInputProps={{
-            placeholder: 'Start typing est...'
+            placeholder: 'Search it!'
             }}
             onSelectItem={setSelectedItem}
             loading={loading}
