@@ -3,8 +3,8 @@ import re
 def insert_food(con,html_doc):
     cur = con.cursor()
     soup = BeautifulSoup(html_doc, 'html.parser')
-    for i in soup.findAll("div",{"class":"MuiBox-root css-rr9uo8"}):
-        name= i.find("p",{"class":"MuiTypography-root MuiTypography-body1 css-qumjp8"}).text
+    for i in soup.findAll("div",{"class":"MuiBox-root css-1cheb17"}):
+        name= i.find("p",{"class":"css-j7qwjs"}).text
         values={}
         values["name"]=name
         cond=1
@@ -21,6 +21,5 @@ def insert_food(con,html_doc):
         placeholders = ', '.join('?' * len(values))
         sql = 'INSERT OR REPLACE INTO food ({}) VALUES ({})'.format(columns, placeholders)
         values = [int(x) if isinstance(x, bool) else x for x in values.values()]
-        print(values)
         cur.execute(sql, values)
     con.commit()
