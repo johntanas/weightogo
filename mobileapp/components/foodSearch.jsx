@@ -25,7 +25,7 @@ const RemoteDataSetExample = memo(() => {
         const suggestions=data.map(item => ({
             id: item.id,
             title: item.name,
-            calories :item.Calories
+            calories :item.calories
         }))
         //console.log('suggestions', suggestions)
         setRemoteDataSet(suggestions)
