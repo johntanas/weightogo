@@ -2,7 +2,7 @@
   
 Losing weight is something
 many want to do but find
-hard to accomplish.
+hard to accomplish.\n
 We have first-hand
 experience in getting fat to
 fit and we want to help
@@ -12,14 +12,16 @@ learn from their experience
 as well
 
  <b>Aim</b>
+ 
 Track your weight
-Get meal ideas and meal plan
+Get meal ideas and meal plan\n
 Seamlessly add catalog your
 food by taking a photo
 
 <b>User Stories</b> 
+
 People who want to lose
-weight
+weight\n
 People who want to keep
 fit
 People looking for new
