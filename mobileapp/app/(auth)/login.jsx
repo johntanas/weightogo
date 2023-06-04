@@ -1,8 +1,9 @@
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { useState } from "react";
 import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
 import { Link } from "expo-router";
 import { supabase } from "../../lib/supabase";
+import img from "../../assets/weightogo.jpg";
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -28,7 +29,8 @@ export default function LoginPage() {
         }
     }
     return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1 ,justifyContent: 'center' }}>
+            <Image source={img} style = {{width : 300, height :100, marginLeft : 60}} resizeMode = "cover"></Image>
             <Text>Email</Text>
             <TextInput
                 autoCapitalize='none'
