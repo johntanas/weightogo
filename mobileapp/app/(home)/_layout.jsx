@@ -7,6 +7,7 @@ export default function HomeScreen() {
             <Tabs.Screen name="index" options={{ title: "Home" }} />
             <Tabs.Screen name = "calculator" options = {{title : "Calorie Calculator"}} />
             <Tabs.Screen name="calorieCounter" />
+            <Tabs.Screen name = "weightLog" />
             <Tabs.Screen name = "settings" />
         </Tabs>
     );
