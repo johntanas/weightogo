@@ -38,7 +38,6 @@ export default function SettingsPage(){
         <View alignItems = "center">
             <DisplayCalories cals = {cals}></DisplayCalories>
             <PieChart cals={cals} consumed = {300}/>
-            
             <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
         </View>  
     )
