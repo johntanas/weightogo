@@ -42,10 +42,11 @@ export default  function WeightLog() {
 function AddWeight({stateChanger}){
   const { user } = useAuth();
   const [chosenDate, setChosenDate] = useState(new Date());
-  const [weight, setWeight ] = useState('99');
+  const [weight, setWeight ] = useState(0);
   const onSubmit = async () => {
     const floatWeight=parseFloat(weight)
     const { error } = await supabase.from('weightdata').upsert({ user_id: user.id,date:chosenDate,weight:floatWeight},options={onConflict:"user_id,date"});
+    console.log(error)
     stateChanger(true);
   }
     return (
@@ -61,6 +62,16 @@ function AddWeight({stateChanger}){
       )
 }
 function WeightItem({weight,stateChanger}) {
+  const [updateWeight, setUpdateWeight ] = useState(weight.weight.toString());
+  const onUpdate = async () => {
+    const floatWeight=parseFloat(updateWeight)
+    console.log("Updated "+weight.id)
+    const { error } = await supabase
+    .from('weightdata')
+    .update({'weight':floatWeight})
+    .eq('id', weight.id)
+    console.log(error)
+  }
   const onSubmit = async () => {
     const { error } = await supabase
     .from('weightdata')
@@ -71,7 +82,7 @@ function WeightItem({weight,stateChanger}) {
   return (
       <View style={styles.dateContainer}>
         <Text>{weight.date}</Text>
-        <Text>{weight.weight}</Text>
+        <TextInput  keyboardType ='numbers-and-punctuation' placeholder={updateWeight} onChangeText={(value) =>{setUpdateWeight(value)}} onEndEditing={onUpdate}></TextInput>
         <Button onPress = {onSubmit}>Delete</Button>
       </View>
   )
