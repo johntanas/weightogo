@@ -4,14 +4,13 @@ import {StyleSheet,FlatList, View} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { memo,useEffect, useState } from 'react';
 import { useAuth } from "../contexts/auth";
-import { useRouter } from 'expo-router';
 
 export default  function WeightLog() {
   const [weights, setWeights] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   async function fetchWeight() {
       setRefreshing(true);
-      let { data } = await supabase.from('weightData').select('*');
+      let { data } = await supabase.from('weightdata').select('*');
       setRefreshing(false);
       data.sort((a,b)=> a.date>b.date ? 1 : a.date==b.date ?0 :-1);
       setWeights(data);
@@ -32,22 +31,22 @@ export default  function WeightLog() {
         <FlatList
           data={weights}
           initialNumToRender={10}
-          renderItem={({ item }) => <WeightItem weight={item} />}
+          renderItem={({ item }) => <WeightItem weight={item} stateChanger={setRefreshing} />}
           onRefresh={() => setRefreshing(true)}
           refreshing={refreshing}
         />
-        <AddWeight/>
+        <AddWeight stateChanger={setRefreshing}/>
       </View>
   );
 }
-function AddWeight(){
+function AddWeight({stateChanger}){
   const { user } = useAuth();
   const [chosenDate, setChosenDate] = useState(new Date());
-  const router = useRouter();
   const [weight, setWeight ] = useState('99');
   const onSubmit = async () => {
     const floatWeight=parseFloat(weight)
-    const { error } = await supabase.from('weightData').upsert({ user_id: user.id,date:chosenDate,weight:floatWeight});
+    const { error } = await supabase.from('weightdata').upsert({ user_id: user.id,date:chosenDate,weight:floatWeight},options={onConflict:"user_id,date"});
+    stateChanger(true);
   }
     return (
       <View>
@@ -61,13 +60,13 @@ function AddWeight(){
       </View>
       )
 }
-function WeightItem({weight}) {
+function WeightItem({weight,stateChanger}) {
   const onSubmit = async () => {
     const { error } = await supabase
-    .from('weightData')
+    .from('weightdata')
     .delete()
     .eq('id', weight.id)
-    console.log(error)
+    stateChanger(true);
   }
   return (
       <View style={styles.dateContainer}>
