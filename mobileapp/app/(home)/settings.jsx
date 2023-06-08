@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/auth";
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
+import PieChart from "../../components/calorieChart";
 
 function DisplayCalories({cals}){
     if (cals !== 0 ) return (
@@ -18,7 +19,6 @@ export default function SettingsPage(){
 
     async function gettingMaintenanceCals() {
         const { data , error} = await supabase.from("rmrData").select().eq("user_id",user.id);
-        console.log(data[0].maintenanceCals);
         if (error){
             console.log("Error occurred! Have you calculated your calories?")
             // change to appear on screen instead but next time.
@@ -33,10 +33,12 @@ export default function SettingsPage(){
         gettingMaintenanceCals();
     },[])
     
-
+    // to fill the consumed with the calorie counter but need the food app to work
     return (
-        <View style = {{justifyContent : "space-between"}}>
+        <View alignItems = "center">
             <DisplayCalories cals = {cals}></DisplayCalories>
+            <PieChart cals={cals} consumed = {300}/>
+            
             <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
         </View>  
     )
