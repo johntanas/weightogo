@@ -1,24 +1,54 @@
 import { supabase } from '../lib/supabase';
-import { DataTable, TextInput } from 'react-native-paper';
-import { View ,useState } from 'react-native';
-
+import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
+import {  FlatList, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 export default  function WeightLog() {
+  const [weights, setWeight] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  async function fetchWeight() {
+      setRefreshing(true);
+      let { data } = await supabase.from('weightData').select('*');
+      setRefreshing(false);
+      setWeight(data);
+  }
+
+  useEffect(() => {
+    fetchWeight();
+  }, []);
+
+  useEffect(() => {
+      if (refreshing) {
+        fetchWeight();
+        setRefreshing(false);
+      }
+  }, [refreshing]);
+
   return (
-    <View>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title Datetime>Date</DataTable.Title>
-          <DataTable.Title numeric>Weight</DataTable.Title>
-          <DataTable.Title numeric>Height</DataTable.Title>
-        </DataTable.Header>
-        <WeightAdd />
-      </DataTable>
-    </View>
+      <View>
+        <AddWeight/>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <FlatList
+              data={weights}
+              renderItem={({ item }) => <WeightItem weight={item} />}
+              onRefresh={() => setRefreshing(true)}
+              refreshing={refreshing}
+            />
+        </View>
+      </View>
   );
 }
-export function WeightAdd(){
+function AddWeight(){
+    return <View style={{justifyContent: 'center' }}>
+      <Text>Date: </Text>
+      <TextInput />
+    </View>
+}
+function WeightItem({weight}) {
   return (
-    <TextInput />
+      <View>
+
+      </View>
   )
 }
