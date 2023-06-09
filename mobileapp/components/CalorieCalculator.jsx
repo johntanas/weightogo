@@ -24,7 +24,7 @@ export default function CalcDisplay(){
         const { error } = await supabase.from('rmrData').upsert({ user_id: user.id,...data})
     }
     const calculateCalories= () =>{
-        if (data.age && data.weight && data.gender && data.height && data.selectedCat &&data.weight){
+        if ((data.age>0) && data.weight && data.gender && data.height && data.selectedCat &&data.weight){
             console.log(data.gender)
             const rmr = (data.gender=="Male")?data.weight*9.99 + data.height*6.25 - 4.92*data.age -50: data.weight*9.99 + data.height*6.25 - 4.92*data.age -216;
             data.selectedCat[0]==0?setMaintenanceCals(rmr*1.2):
