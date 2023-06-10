@@ -1,5 +1,12 @@
 {
-  "expo": {
+  "expo": {"plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ],
     "name": "mobileapp",
     "slug": "weightogo",
     "version": "1.0.0",
