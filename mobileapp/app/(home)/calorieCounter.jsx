@@ -4,7 +4,7 @@ import {View,StyleSheet} from "react-native";
 import Cam from "../../components/FoodCamera.jsx"
 export default function DataScreen(){
     return(
-        <View>
+        <View >
             <FoodSearch />
             <FoodAdd />
             <Cam />
