@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 import PieChart from "../../components/calorieChart";
+import Consumption from "../../components/CheckDailyConsumption";
 
 function DisplayCalories({cals}){
     if (cals !== 0 ) return (
@@ -39,6 +40,7 @@ export default function SettingsPage(){
             <DisplayCalories cals = {cals}></DisplayCalories>
             <PieChart cals={cals} consumed = {300}/>
             <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
+            <Consumption></Consumption>
         </View>  
     )
 }

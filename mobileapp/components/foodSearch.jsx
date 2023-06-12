@@ -3,6 +3,9 @@ import { Text} from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import { supabase } from '../lib/supabase';
 import FoodAdd from './FoodAdd';
+import { Button } from 'react-native-paper';
+import { useAuth } from '../contexts/auth';
+
 export default function FoodSearch() {
     return (
         <RemoteDataSetExample />
@@ -13,6 +16,7 @@ const RemoteDataSetExample = memo(() => {
     const [loading, setLoading] = useState(false)
     const [remoteDataSet, setRemoteDataSet] = useState(null)
     const [selectedItem, setSelectedItem] = useState(null)
+    const { user } = useAuth();
 
     const getSuggestions = useCallback(async q => {
         console.log('getSuggestions', q)
@@ -31,6 +35,18 @@ const RemoteDataSetExample = memo(() => {
         setRemoteDataSet(suggestions)
         setLoading(false)
     }, [])
+    
+    async function addToLogs() {
+        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : selectedItem.title, calories : selectedItem.calories});
+        if (error) {
+            console.log(error.message);
+            return;
+        }
+        setSelectedItem(null);
+    }
+    const onSubmit = () => {
+        addToLogs();
+    }
 
     return (
         <>
@@ -51,6 +67,7 @@ const RemoteDataSetExample = memo(() => {
             EmptyResultComponent={<FoodAdd />}
         />
         <Text style={{ color: '#668', fontSize: 13 }}>Selected item: {JSON.stringify(selectedItem)}</Text>
+        <Button onPress = {onSubmit}>Submit</Button>
         </>
     )
 })
