@@ -11,7 +11,7 @@ export default function PieChart({cals,consumed}){
     const ratio = (cals-consumed)/cals;
     let offset = ratio*circumference;
 
-    if (consumed > cals) offset = 0;
+    if (consumed > cals) {offset = 0;}
     
     return (
         <View style = {[{width : size, height : size}, styles.rotate]}>

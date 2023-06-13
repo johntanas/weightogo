@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/auth";
 import { Button, Text } from "react-native-paper";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import PieChart from "./calorieChart";
 
 
@@ -11,7 +11,7 @@ export default function Consumption() {
     const date = new Date().toJSON();
     const [ list, setList ] = useState([]);
     const [ consumed, setConsumed ] = useState(0);
-    let consumedCals = 0;
+    const [ consumedCals, setConsumedCals ] = useState(0);
     const [cals, setCals] = useState(0);
 
     async function gettingMaintenanceCals() {
@@ -22,7 +22,6 @@ export default function Consumption() {
             return;
         }
         else {setCals(data[0].maintenanceCals);}
-        console.log(cals);
         return;
     }
 
@@ -32,13 +31,16 @@ export default function Consumption() {
             console.log(error.message);
             return;
         }
+        else{
         setList(data.map(item => 
             item.inserted_at.slice(0,10)===date.slice(0,10)?item:null
         ));
         setConsumed(data.map(item => 
             item.inserted_at.slice(0,10)===date.slice(0,10)?item.calories:0
         ));
-        consumedCals = consumed.reduce((a,b) => a+b, 0);
+        }
+        let filler = consumed.reduce((a,b) => a+b, 0)
+        setConsumedCals(parseInt(filler));
     }
     
     // const onSubmit = () =>{
@@ -52,10 +54,10 @@ export default function Consumption() {
     // debug : does it appear when u add a new one after ur first initial render?
     // pass pie chart into this rather than settings
     return (
-        <View>
+        <View style = {{alignItems : "center"}}>
             {cals !== 0?<Text>Your maintenance calories are : {cals}</Text>:<Text></Text>}
-            <PieChart cals = {cals} />
-            <Text>You have consumed : {consumedCals}</Text>
+            <PieChart cals = {cals} consumed = {consumedCals} />
+            <Text>You have consumed : {consumedCals} calories</Text>
             {/* {list.length>0?list.map(item => <Text> {item.title}, {item.calories}</Text>):<Text></Text>} */}
         </View>
     )
