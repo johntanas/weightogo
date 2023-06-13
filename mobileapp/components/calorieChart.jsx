@@ -8,7 +8,7 @@ export default function PieChart({cals,consumed}){
     const radius = (size-strokeWidth)/2;
     const circumference = 2 * Math.PI * radius;
 
-    const ratio = consumed/cals;
+    const ratio = (cals-consumed)/cals;
     let offset = ratio*circumference;
 
     if (consumed > cals) offset = 0;

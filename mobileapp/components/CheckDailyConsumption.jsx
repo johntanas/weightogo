@@ -3,11 +3,28 @@ import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/auth";
 import { Button, Text } from "react-native-paper";
 import { useState } from "react";
+import PieChart from "./calorieChart";
+
 
 export default function Consumption() {
     const { user } = useAuth();
     const date = new Date().toJSON();
     const [ list, setList ] = useState([]);
+    const [ consumed, setConsumed ] = useState(0);
+    let consumedCals = 0;
+    const [cals, setCals] = useState(0);
+
+    async function gettingMaintenanceCals() {
+        const { data , error} = await supabase.from("rmrData").select().eq("user_id",user.id);
+        if (error){
+            console.log("Error occurred! Have you calculated your calories?")
+            // change to appear on screen instead but next time.
+            return;
+        }
+        else {setCals(data[0].maintenanceCals);}
+        console.log(cals);
+        return;
+    }
 
     async function getFoodLogs(){
         const {data, error} = await supabase.from("mealData").select().eq("user_id",user.id);
@@ -18,16 +35,28 @@ export default function Consumption() {
         setList(data.map(item => 
             item.inserted_at.slice(0,10)===date.slice(0,10)?item:null
         ));
-        
-    }
-    const onSubmit = () =>{
-        getFoodLogs();
+        setConsumed(data.map(item => 
+            item.inserted_at.slice(0,10)===date.slice(0,10)?item.calories:0
+        ));
+        consumedCals = consumed.reduce((a,b) => a+b, 0);
     }
     
+    // const onSubmit = () =>{
+    //     getFoodLogs();
+    // }
+    useEffect(() => {
+        gettingMaintenanceCals();
+        getFoodLogs();
+    },[])
+    
+    // debug : does it appear when u add a new one after ur first initial render?
+    // pass pie chart into this rather than settings
     return (
         <View>
-            <Button onPress = {onSubmit}>Check</Button>
-            {list.length>0?list.map(item => <Text>{item.title}, {item.calories}</Text>):<Text></Text>}
+            {cals !== 0?<Text>Your maintenance calories are : {cals}</Text>:<Text></Text>}
+            <PieChart cals = {cals} />
+            <Text>You have consumed : {consumedCals}</Text>
+            {/* {list.length>0?list.map(item => <Text> {item.title}, {item.calories}</Text>):<Text></Text>} */}
         </View>
     )
 }
