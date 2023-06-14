@@ -7,7 +7,7 @@ import Consumption from "../../components/CheckDailyConsumption";
 
 export default function SettingsPage(){
     return (
-        <View style = {{alignItems : "center", justifyContent : "space-between"}}>
+        <View style = {{alignItems : "center", justifyContent : "center"}}>
             <Consumption></Consumption>
             <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
         </View>  
