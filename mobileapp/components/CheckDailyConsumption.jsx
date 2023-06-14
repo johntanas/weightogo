@@ -22,7 +22,6 @@ export default function Consumption() {
             return;
         }
         else {setCals(data[0].maintenanceCals);}
-        return;
     }
 
     async function getFoodLogs(){
@@ -36,28 +35,31 @@ export default function Consumption() {
             item.inserted_at.slice(0,10)===date.slice(0,10)?item:null
         ));
         setConsumed(data.map(item => 
-            item.inserted_at.slice(0,10)===date.slice(0,10)?item.calories:0
+            item.inserted_at.slice(0,10)===date.slice(0,10)?parseInt(item.calories):null
         ));
-        }
         let filler = consumed.reduce((a,b) => a+b, 0)
         setConsumedCals(parseInt(filler));
+        }
+        
     }
     
-    // const onSubmit = () =>{
-    //     getFoodLogs();
-    // }
     useEffect(() => {
         gettingMaintenanceCals();
         getFoodLogs();
     },[])
+
+    const onPress= () =>{
+        gettingMaintenanceCals();
+        getFoodLogs();
+    }
     
     // debug : does it appear when u add a new one after ur first initial render?
-    // pass pie chart into this rather than settings
     return (
         <View style = {{alignItems : "center"}}>
             {cals !== 0?<Text>Your maintenance calories are : {cals}</Text>:<Text></Text>}
             <PieChart cals = {cals} consumed = {consumedCals} />
             <Text>You have consumed : {consumedCals} calories</Text>
+            <Button onPress = {onPress}>Refresh</Button>
             {/* {list.length>0?list.map(item => <Text> {item.title}, {item.calories}</Text>):<Text></Text>} */}
         </View>
     )

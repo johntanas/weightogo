@@ -42,6 +42,7 @@ const RemoteDataSetExample = memo(() => {
             console.log(error.message);
             return;
         }
+        
         setSelectedItem(null);
     }
     const onSubmit = () => {
