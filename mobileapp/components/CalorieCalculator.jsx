@@ -13,7 +13,7 @@ export default function CalcDisplay(){
         supabase.from('rmrData').select('*').then(response => {
             if (response.data.length!=0){
                 setData(response.data[0])
-                console.log(data.maintenanceCals)
+                //console.log(data.maintenanceCals)
                 setMaintenanceCals(data.maintenanceCals)
             }
         })

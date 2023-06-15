@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { FlatList, View } from "react-native";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/auth";
 import { Button, Text } from "react-native-paper";
@@ -54,12 +54,18 @@ export default function Consumption() {
     }
     
     // debug : does it appear when u add a new one after ur first initial render?
+    const [ toggleListView, setToggle ]  = useState(false);
+
+    const onToggle = () => {setToggle(!toggleListView);}
+
     return (
         <View style = {{alignItems : "center"}}>
             {cals !== 0?<Text>Your maintenance calories are : {cals}</Text>:<Text></Text>}
             <PieChart cals = {cals} consumed = {consumedCals} />
             <Text>You have consumed : {consumedCals} calories</Text>
             <Button onPress = {onPress}>Refresh</Button>
+            <Button onPress = {onToggle}>See Food Logs for Today!</Button>
+            {toggleListView?list.map(item => item!==null?<Text>{item.title}, {item.calories}</Text>:null):null}
             {/* {list.length>0?list.map(item => <Text> {item.title}, {item.calories}</Text>):<Text></Text>} */}
         </View>
     )
