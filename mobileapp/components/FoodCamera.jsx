@@ -46,6 +46,7 @@ export default function Cam() {
   }
   return (
     <View style={styles.container}>
+      <Text> Search using a photo!</Text>
       <Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} pictureSize='128,128'>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>

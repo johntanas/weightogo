@@ -6,7 +6,6 @@ export default function DataScreen(){
     return(
         <View >
             <FoodSearch />
-            <FoodAdd />
             <Cam />
         </View>
     )
