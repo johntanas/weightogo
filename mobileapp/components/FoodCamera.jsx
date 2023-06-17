@@ -2,12 +2,11 @@ import { Camera, CameraType } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View ,Image} from 'react-native';
 import { supabase } from '../lib/supabase';
-import flip from '../assets/flipCamera.png';
-import shutter from '../assets/icon_shutterbutton.png';
 export default function Cam() {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [curImage, setCurImage] = useState(null);
+  const [prediction,setPrediciton] = useState(null);
   if (!permission) {
     // Camera permissions are still loading
     return <View />;
@@ -33,21 +32,41 @@ export default function Cam() {
     }
   };
   upload= async (photo) => {
-    const { data, error } = await supabase.storage.from('images').upload(`${new Date().getTime()}`,photo);
-    console.log(error);
-    console.log(data)
+    const { data, error } = await supabase.storage.from('images').upload(`${new Date().getTime()}`,photo,{contentType: "jpg",});
+    if (error == null){
+      inference(data.path);
+    }
   }
   onPictureSaved = photo => {
       setCurImage(photo);
       upload(photo);
   } 
-  inference = photoUrl =>{
-    
+  inference = photoid =>{
+    const apiurl=process.env['INFER_URL']
+    const baseurl=process.env['IMAGE_STORAGE_URL']
+    fetch(apiurl, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: baseurl+photoid,
+      }),
+    }).then(
+      rep=> rep.json()
+    ).then(
+      json=> {
+        console.log(json.prediction);
+        setPrediciton(json.prediction);
+      }
+    )
+
   }
   return (
     <View style={styles.container}>
       <Text> Search using a photo!</Text>
-      <Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }} pictureSize='128,128'>
+      <Camera style={styles.camera} type={type} ref={(ref) => { this.camera = ref }}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
             <Text style={styles.text}>Flip Camera</Text>
@@ -57,6 +76,7 @@ export default function Cam() {
           </TouchableOpacity>
         </View>
       </Camera>
+      <Text>{prediction}</Text>
     </View>
   );
 }
