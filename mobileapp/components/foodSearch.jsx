@@ -2,7 +2,6 @@ import React, { memo, useCallback, useState } from 'react'
 import { Text} from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import { supabase } from '../lib/supabase';
-import FoodAdd from './FoodAdd';
 import { Button } from 'react-native-paper';
 import { useAuth } from '../contexts/auth';
 
@@ -65,7 +64,7 @@ const RemoteDataSetExample = memo(() => {
             suggestionsListTextStyle={{
                 color: '#8f3c96'
             }}
-            EmptyResultComponent={<FoodAdd />}
+            EmptyResultComponent={<Text> Not Found </Text>}
         />
         <Text style={{ color: '#668', fontSize: 13 }}>Selected item: {JSON.stringify(selectedItem)}</Text>
         <Button onPress = {onSubmit}>Submit</Button>

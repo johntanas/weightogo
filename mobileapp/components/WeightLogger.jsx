@@ -1,8 +1,8 @@
 import { supabase } from '../lib/supabase';
-import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
+import { Text, TextInput, Button} from "react-native-paper";
 import {StyleSheet,FlatList, View} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { memo,useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import { useAuth } from "../contexts/auth";
 
 export default  function WeightLog() {

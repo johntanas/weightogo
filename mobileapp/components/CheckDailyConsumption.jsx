@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/auth";
 import { Button, Text } from "react-native-paper";
 import { useState , useEffect } from "react";
-import PieChart from "./calorieChart";
+import PieChart from "./CalorieChart";
 
 
 export default function Consumption() {
