@@ -10,7 +10,16 @@ export default function FoodAdd(){
     const [calories,setCalories] = useState(0)
     const [name,setName] = useState("")
     async function addToLogs() {
-        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : selectedItem.title, calories : selectedItem.calories});
+        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : name, calories : calories});
+        if (error) {
+            console.log(error.message);
+            return;
+        }
+        
+        setSelectedItem(null);
+    }
+    async function addToDatabase() {
+        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : name, calories : calories});
         if (error) {
             console.log(error.message);
             return;
