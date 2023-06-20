@@ -7,34 +7,31 @@ import { supabase } from '../lib/supabase';
 import NumericInput from 'react-native-numeric-input'
 export default function FoodAdd(){
     const { user } = useAuth();
-    const [calories,setCalories] = useState(0)
-    const [name,setName] = useState("")
+    const [foodcalories,setCalories] = useState(null)
+    const [foodname,setFoodname] = useState("")
     async function addToLogs() {
-        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : name, calories : calories});
+        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : foodname, calories : foodcalories});
         if (error) {
             console.log(error.message);
             return;
         }
-        
-        setSelectedItem(null);
     }
     async function addToDatabase() {
-        const { error } = await supabase.from("mealData").insert({user_id : user.id, title : name, calories : calories});
+        const { error } = await supabase.from("foodData").insert({user_id : user.id, name : foodname, calories : foodcalories});
         if (error) {
             console.log(error.message);
             return;
         }
-        
-        setSelectedItem(null);
     }
     const onSubmit = () => {
         addToLogs();
+        addToDatabase();
     }
     return (
         <View>
-            <TextInput placeholder="Add your own food!"/>
+            <TextInput placeholder="Add your own food!" onChangeText={val=>setFoodname(val)}/>
             <Text> calories </Text>
-            <NumericInput/>
+            <NumericInput onChange={(val)=> setCalories(val)}/>
             <Button onPress = {onSubmit}>Submit</Button>
         </View>
     )
