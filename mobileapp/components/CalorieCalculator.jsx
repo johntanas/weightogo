@@ -4,6 +4,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from "../contexts/auth";
+import NumericInput from 'react-native-numeric-input'
 
 export default function CalcDisplay(){
     const [maintenanceCals, setMaintenanceCals] = useState(0);
@@ -13,19 +14,18 @@ export default function CalcDisplay(){
         supabase.from('rmrData').select('*').then(response => {
             if (response.data.length!=0){
                 setData(response.data[0])
-                //console.log(data.maintenanceCals)
+                console.log(data.maintenanceCals)
                 setMaintenanceCals(data.maintenanceCals)
             }
         })
     },[]
     )
-    const [data,setData] = useState({age:"",weight:"",height:"",selectedCat:"",gender:""});
+    const [data,setData] = useState({age:0,weight:0,height:0,selectedCat:"",gender:""});
     const insertRmrData = async (data) => {
         const { error } = await supabase.from('rmrData').upsert({ user_id: user.id,...data})
     }
     const calculateCalories= () =>{
         if ((data.age>0) && data.weight && data.gender && data.height && data.selectedCat &&data.weight){
-            console.log(data.gender)
             const rmr = (data.gender=="Male")?data.weight*9.99 + data.height*6.25 - 4.92*data.age -50: data.weight*9.99 + data.height*6.25 - 4.92*data.age -216;
             data.selectedCat[0]==0?setMaintenanceCals(rmr*1.2):
             data.selectedCat[0]==1?setMaintenanceCals(rmr*1.3-1.375):
@@ -75,11 +75,11 @@ export default function CalcDisplay(){
     return (
         <View>
             <Text>Your age</Text>
-            <TextInput placeholder={data.age} onChangeText={(age) => setData(prevState => ({...prevState,age:age}))}></TextInput>
+            <NumericInput placeholder={data.age} onChange={(age) => setData(prevState => ({...prevState,age:age}))}></NumericInput>
             <Text>Your weight in kilograms</Text>
-            <TextInput placeholder={data.weight} onChangeText={(weight) => setData(prevState => ({...prevState,weight:weight}))}></TextInput>
+            <NumericInput placeholder={data.weight} onChange={(weight) => setData(prevState => ({...prevState,weight:weight}))}></NumericInput>
             <Text>Your height in centimeters</Text>
-            <TextInput placeholder={data.height} onChangeText={(height) => setData(prevState => ({...prevState,height:height}))}></TextInput>
+            <NumericInput placeholder={data.height} onChange={(height) => setData(prevState => ({...prevState,height:height}))}></NumericInput>
             <Text>Your activity level</Text>
             <SelectList 
                 placeholder={data.selectedCat}
